@@ -1,2 +1,2 @@
 # Peilin545
-It is for assignments in class Fintech 545: Quantitative Risk Management.
+It is for assignments in course Fintech 545: Quantitative Risk Management.
