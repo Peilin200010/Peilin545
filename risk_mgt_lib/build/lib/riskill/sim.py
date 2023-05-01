@@ -59,7 +59,7 @@ class PCA:
 
 class Copula:
     @staticmethod
-    def simulation_multi_t(mat: pd.DataFrame, draw: int = 25000, min_explain: float = 1.0) -> np.ndarray:
+    def simulation_multi_t(mat: pd.DataFrame, draw: int = 25000, min_explain: float = 1.0) -> dict:
         U = mat.copy()
         frees = []
         mus = []
@@ -82,4 +82,6 @@ class Copula:
         for i in range(U_sim.shape[1]):
             X[:, i] = sps.t.ppf(U_sim[:, i], frees[i], loc=mus[i], scale=sigmas[i])
 
-        return X
+        dic = {'X': X, 'dfs': frees, 'mus': mus, 'sigmas': sigmas}
+
+        return dic

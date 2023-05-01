@@ -3,6 +3,7 @@ import sys
 
 
 def weighted_f_norm(A: np.ndarray, W: np.ndarray) -> float:
+    # set w = I if unweighted
     WAW = np.diag(np.sqrt(W))@A@np.diag(np.sqrt(W))
     return np.linalg.norm(WAW)**2
 

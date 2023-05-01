@@ -119,13 +119,13 @@ class ByDistri:
 
     @staticmethod
     def delta_normal_VaR_ES(A: pd.Series or pd.DataFrame, Q: pd.Series or pd.DataFrame,
-                            delta: np.ndarray, P: float, var: float, alpha: float = 0.05) -> (float, float):
+                            delta: np.ndarray, P: float, var: float, Nday: int=1, alpha: float = 0.05) -> (float, float):
         """
         in dollar, consider only one underlying price, assuming μ=0
         """
         PV = A@Q
         dR = P/PV * delta@Q
-        sigma = np.sqrt(dR*var*dR)
+        sigma = np.sqrt(dR*var*dR)*np.sqrt(Nday)
         P_ret = sps.norm.rvs(scale=sigma,size=10_000)
         delta_VaR, delta_ES = VaR_ES(P_ret, alpha)
         return PV * delta_VaR, PV * delta_ES

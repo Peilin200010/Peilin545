@@ -2,6 +2,7 @@ README.md
 setup.py
 riskill/__init__.py
 riskill/covmatrix.py
+riskill/fitted_model.py
 riskill/option.py
 riskill/portfolio.py
 riskill/risk.py
