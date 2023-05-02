@@ -17,7 +17,7 @@ def return_calculate(prices: pd.DataFrame, method: str = 'DISCRETE', date_column
     n_vars -= 1
 
     p = prices[Vars]
-    out = (p / p.shift(1)).dropna()
+    out = (p / p.shift(1)).iloc[1:, :]
 
     if method.upper() == "DISCRETE":
         out = out.apply(lambda x: x-1)
@@ -96,7 +96,7 @@ class ByDistri:
         sim_t = sps.t.rvs(free, loc=mu, scale=sigma, size=10000)
         return VaR_ES(sim_t, alpha)
 
-    def portfolio_VaR_ES_t(self, prices: pd.DataFrame, P: dict, alpha: float = 0.05,
+    def portfolio_VaR_ES_t(prices: pd.DataFrame, P: dict, alpha: float = 0.05,
                            return_method: str = 'DISCRETE', date_column: str = 'Date') -> (float, float):
         """
         in dollar
@@ -104,8 +104,8 @@ class ByDistri:
         prices_P = prices[[date_column] + list(P.keys())]
         holdings = np.array(list(P.values()))
         current_value_P = holdings.T @ prices_P.iloc[-1, 1:]
-        returns_P = return_calculate(prices_P, return_method)
-        sim_returns = Copula().simulation_multi_t(returns_P)
+        returns_P = (return_calculate(prices_P, return_method)).dropna()
+        sim_returns = Copula().simulation_multi_t(returns_P)['X']
 
         if return_method.upper() == 'DISCRETE':
             sim_prices = (sim_returns + 1) * np.array(prices_P.iloc[-1, 1:])

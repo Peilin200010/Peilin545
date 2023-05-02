@@ -74,7 +74,12 @@ class Copula:
             sigmas.append(sigma)
 
         cor = sps.spearmanr(U)[0]
-        N = PCA().simulation(cor, draw, min_explain)
+        if cor.size == 1:
+            cormat = np.array([[1.0, cor],
+                               [cor, 1.0]])
+        else:
+            cormat = cor
+        N = PCA().simulation(cormat, draw, min_explain)
 
         # transform back
         U_sim = sps.norm.cdf(N)
